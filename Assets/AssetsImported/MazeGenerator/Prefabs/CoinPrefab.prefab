@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 2399664}
   - component: {fileID: 9529464}
   - component: {fileID: 6542456}
+  - component: {fileID: 114383468230184792}
   m_Layer: 0
   m_Name: CoinPrefab
   m_TagString: coin
@@ -84,7 +85,7 @@ BoxCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 2, y: 1.9999999, z: 0.13912332}
+  m_Size: {x: 2, y: 1.9999999, z: 2}
   m_Center: {x: -0.00000023841858, y: 0.0000005364418, z: 0.00000017881393}
 --- !u!95 &9529464
 Animator:
@@ -115,3 +116,15 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 159624}
   m_IsPrefabAsset: 1
+--- !u!114 &114383468230184792
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 159624}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93dcc4c6cb9ec5341a9207644e058255, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GameplayController: {fileID: 0}

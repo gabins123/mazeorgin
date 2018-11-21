@@ -32,11 +32,16 @@ public class GameplayController : MonoBehaviour {
     public int m_child=0;
     public bool isWon;
     public bool isSpawned;
-    bool isBakanaSpawned = false;
+    bool isBakanaSpawned;
     private int m_SoGoc=0;
     public GameObject m_Player;
     public Button m_ResetGame;
     public GameObject m_StartPosition;
+
+    public GameObject LevelController;
+    private int m_NumOfBanaka;
+    public List<GameObject> listBakana;
+    public bool isSaved = false;
 
     // Use this for initialization
     void Start () {
@@ -69,7 +74,9 @@ public class GameplayController : MonoBehaviour {
     }
     // Update is called once per frame
     public void SpawnMaze(int Columns, int Rows)
-    {      
+    {
+        m_NumOfBanaka = LevelController.GetComponent<LevelController>().m_Level;
+        isBakanaSpawned = false;
         if (!FullRandom)
         {
             Random.seed = RandomSeed;
@@ -124,13 +131,14 @@ public class GameplayController : MonoBehaviour {
                     tmp.transform.parent = Parent.transform;
                 }
                 if (cell.IsGoal && GoalPrefab != null && !isBakanaSpawned)
-                {
-                    isBakanaSpawned = true;
+                {   
                     m_SoGoc++;
                     if(m_SoGoc > 1)
                     {
-                        tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        tmp.transform.parent = Parent.transform;
+                        Debug.LogError("Spawned bakana!!");
+                        isBakanaSpawned = true;
+                        listBakana[m_NumOfBanaka] = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                        listBakana[m_NumOfBanaka].transform.parent = Parent.transform;
                     }                   
                 }
             }
@@ -152,8 +160,15 @@ public class GameplayController : MonoBehaviour {
     }
     void hamReset()
     {
-        deleteAllChild();
-        SpawnMaze(m_BasicColumns, m_BasicRows);
-        m_Player.transform.position = m_StartPosition.transform.position;
+        if(isSaved)
+        {
+            deleteAllChild();
+            SpawnMaze(m_BasicColumns, m_BasicRows);
+            m_Player.transform.position = m_StartPosition.transform.position;
+        }
+        else
+        {
+            Debug.Log("U haven't saved the Bakana yet!");
+        }
     }
 }
