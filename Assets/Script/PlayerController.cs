@@ -4,13 +4,17 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+    public float moveSpeed = 8f;
+    public Joystick joystick;
+
+    void Update()
+    {
+        Vector3 moveVector = (Vector3.right * joystick.Horizontal + Vector3.forward * joystick.Vertical);
+
+        if (moveVector != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(moveVector);
+            transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
+        }
+    }
 }

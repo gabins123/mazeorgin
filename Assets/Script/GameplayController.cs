@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameplayController : MonoBehaviour {
 
@@ -19,7 +20,7 @@ public class GameplayController : MonoBehaviour {
     public int RandomSeed = 12345;
     public GameObject Floor = null;
     public GameObject Wall = null;
-    public GameObject Pillar = null;
+    //public GameObject Pillar = null;
     public int m_BasicRows = 5;
     public int m_BasicColumns = 5;
     public float CellWidth = 4;
@@ -31,26 +32,31 @@ public class GameplayController : MonoBehaviour {
     public int m_child=0;
     public bool isWon;
     public bool isSpawned;
-    
+    bool isBakanaSpawned = false;
+    private int m_SoGoc=0;
+    public GameObject m_Player;
+    public Button m_ResetGame;
+    public GameObject m_StartPosition;
+
     // Use this for initialization
     void Start () {
         
         SpawnMaze(m_BasicColumns, m_BasicRows);
         isSpawned = true;
-
+        m_ResetGame.onClick.AddListener(hamReset);
     }
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-        {
-            deleteAllChild();
-        }
+        //if(Input.GetKeyDown(KeyCode.Z))
+        //{
+        //    deleteAllChild();
+        //}
 
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            SpawnMaze(m_BasicColumns, m_BasicRows);
-        }
+        //if (Input.GetKeyDown(KeyCode.X))
+        //{
+        //    SpawnMaze(m_BasicColumns, m_BasicRows);
+        //}
     }
     public void deleteAllChild()
     {
@@ -117,26 +123,37 @@ public class GameplayController : MonoBehaviour {
                     tmp = Instantiate(Wall, new Vector3(x, 0, z - CellHeight / 2) + Wall.transform.position, Quaternion.Euler(0, 180, 0)) as GameObject;// back
                     tmp.transform.parent = Parent.transform;
                 }
-                if (cell.IsGoal && GoalPrefab != null)
+                if (cell.IsGoal && GoalPrefab != null && !isBakanaSpawned)
                 {
-                    tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                    tmp.transform.parent = Parent.transform;
+                    isBakanaSpawned = true;
+                    m_SoGoc++;
+                    if(m_SoGoc > 1)
+                    {
+                        tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+                        tmp.transform.parent = Parent.transform;
+                    }                   
                 }
             }
         }
-        if (Pillar != null)
-        {
-            for (int row = 0; row < Rows + 1; row++)
-            {
-                for (int column = 0; column < Columns + 1; column++)
-                {
-                    float x = column * (CellWidth + (AddGaps ? .2f : 0));
-                    float z = row * (CellHeight + (AddGaps ? .2f : 0));
-                    GameObject tmp = Instantiate(Pillar, new Vector3(x - CellWidth / 2, 0, z - CellHeight / 2), Quaternion.identity) as GameObject;
-                    tmp.transform.parent = Parent.transform;
-                }
-            }
-        }
+        //if (Pillar != null)
+        //{
+        //    for (int row = 0; row < Rows + 1; row++)
+        //    {
+        //        for (int column = 0; column < Columns + 1; column++)
+        //        {
+        //            float x = column * (CellWidth + (AddGaps ? .2f : 0));
+        //            float z = row * (CellHeight + (AddGaps ? .2f : 0));
+        //            GameObject tmp = Instantiate(Pillar, new Vector3(x - CellWidth / 2, 0, z - CellHeight / 2), Quaternion.identity) as GameObject;
+        //            tmp.transform.parent = Parent.transform;
+        //        }
+        //    }
+        //}
 
+    }
+    void hamReset()
+    {
+        deleteAllChild();
+        SpawnMaze(m_BasicColumns, m_BasicRows);
+        m_Player.transform.position = m_StartPosition.transform.position;
     }
 }
