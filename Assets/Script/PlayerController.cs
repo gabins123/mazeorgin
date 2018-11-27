@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour {
 
+    public GameObject m_GameplayController;
     public float moveSpeed = 8f;
     public Joystick joystick;
 
@@ -17,4 +18,12 @@ public class PlayerController : MonoBehaviour {
             transform.Translate(moveVector * moveSpeed * Time.deltaTime, Space.World);
         }
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.gameObject.CompareTag("Bakanas"))
+        {
+            m_GameplayController.GetComponent<GameplayController>().isSaved = true;
+        }
+    }
+
 }

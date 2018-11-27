@@ -5,7 +5,6 @@ using UnityEngine;
 public class LevelController : MonoBehaviour {
 
     public GameObject GameplayController;
-
     public int m_Level=0;
 
 	

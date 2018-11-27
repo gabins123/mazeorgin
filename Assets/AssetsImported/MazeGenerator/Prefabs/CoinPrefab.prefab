@@ -12,10 +12,10 @@ GameObject:
   - component: {fileID: 2399664}
   - component: {fileID: 9529464}
   - component: {fileID: 6542456}
-  - component: {fileID: 114383468230184792}
+  - component: {fileID: 114580612377223172}
   m_Layer: 0
   m_Name: CoinPrefab
-  m_TagString: coin
+  m_TagString: Bakanas
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -116,7 +116,7 @@ Prefab:
   m_SourcePrefab: {fileID: 0}
   m_RootGameObject: {fileID: 159624}
   m_IsPrefabAsset: 1
---- !u!114 &114383468230184792
+--- !u!114 &114580612377223172
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_CorrespondingSourceObject: {fileID: 0}
@@ -127,4 +127,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93dcc4c6cb9ec5341a9207644e058255, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GameplayController: {fileID: 0}

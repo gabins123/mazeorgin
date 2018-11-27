@@ -37,11 +37,10 @@ public class GameplayController : MonoBehaviour {
     public GameObject m_Player;
     public Button m_ResetGame;
     public GameObject m_StartPosition;
-
     public GameObject LevelController;
-    private int m_NumOfBanaka;
-    public List<GameObject> listBakana;
-    public bool isSaved = false;
+    //private int m_NumOfBanaka;
+    //public List<GameObject> listBakana;
+    public bool isSaved;
 
     // Use this for initialization
     void Start () {
@@ -65,7 +64,6 @@ public class GameplayController : MonoBehaviour {
     }
     public void deleteAllChild()
     {
-        isWon = true;
         if (Parent == null) return;
         foreach (Transform Child in Parent.transform)
         {
@@ -75,7 +73,9 @@ public class GameplayController : MonoBehaviour {
     // Update is called once per frame
     public void SpawnMaze(int Columns, int Rows)
     {
-        m_NumOfBanaka = LevelController.GetComponent<LevelController>().m_Level;
+        m_SoGoc = 0;
+        isSaved = false;
+        //m_NumOfBanaka = LevelController.GetComponent<LevelController>().m_Level;
         isBakanaSpawned = false;
         if (!FullRandom)
         {
@@ -131,15 +131,12 @@ public class GameplayController : MonoBehaviour {
                     tmp.transform.parent = Parent.transform;
                 }
                 if (cell.IsGoal && GoalPrefab != null && !isBakanaSpawned)
-                {   
+                {
                     m_SoGoc++;
-                    if(m_SoGoc > 1)
+                    if(m_SoGoc > caseSummon())
                     {
-                        Debug.LogError("Spawned bakana!!");
-                        isBakanaSpawned = true;
-                        listBakana[m_NumOfBanaka] = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
-                        listBakana[m_NumOfBanaka].transform.parent = Parent.transform;
-                    }                   
+                        summonBakana(tmp, x, z);
+                    }
                 }
             }
         }
@@ -156,19 +153,55 @@ public class GameplayController : MonoBehaviour {
         //        }
         //    }
         //}
-
+        if(!isBakanaSpawned)
+        {
+            Debug.Log("Re-Spawn!");
+            deleteAllChild();
+            SpawnMaze(Columns,Rows);
+        }
     }
     void hamReset()
     {
         if(isSaved)
         {
-            deleteAllChild();
+            hamWin();
             SpawnMaze(m_BasicColumns, m_BasicRows);
             m_Player.transform.position = m_StartPosition.transform.position;
         }
         else
         {
             Debug.Log("U haven't saved the Bakana yet!");
+        }
+    }
+    void hamWin()
+    {
+        isWon = true;
+        if (Parent == null) return;
+        foreach (Transform Child in Parent.transform)
+        {
+            Destroy(Child.gameObject);
+        }
+    }
+    void summonBakana(GameObject tmp, float x, float z)
+    {
+        Debug.LogError("Spawned bakana!!");
+        isBakanaSpawned = true;
+        tmp = Instantiate(GoalPrefab, new Vector3(x, 1, z), Quaternion.Euler(0, 0, 0)) as GameObject;
+        tmp.transform.parent = Parent.transform;
+    }
+    int caseSummon()
+    {
+        if(LevelController.GetComponent<LevelController>().m_Level <= 2)
+        {
+            return 1;
+        }
+        else if(LevelController.GetComponent<LevelController>().m_Level <= 4)
+        {
+            return 2;
+        }
+        else 
+        {
+            return LevelController.GetComponent<LevelController>().m_Level - 2;
         }
     }
 }

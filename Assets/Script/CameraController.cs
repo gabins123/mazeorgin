@@ -5,7 +5,8 @@ using UnityEngine;
 public class CameraController : MonoBehaviour {
 
     public GameObject m_Player;
-    Vector3 m_offset;
+    public GameObject GameplayController;
+    public Vector3 m_offset;
 
 	// Use this for initialization
 	void Start () {
@@ -14,7 +15,10 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if(GameplayController.GetComponent<GameplayController>().isWon)
+        {
+            m_offset.y += 1;
+        }
         transform.position = m_Player.transform.position + m_offset;
-
     }
 }
