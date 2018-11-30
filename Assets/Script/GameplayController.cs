@@ -14,6 +14,7 @@ public class GameplayController : MonoBehaviour {
             RecursiveDivision,
         }
 
+    public GameObject m_OutDoor;
     public GameObject m_LevelController;
     public MazeGenerationAlgorithm esc;
     public bool FullRandom = false;
@@ -35,7 +36,6 @@ public class GameplayController : MonoBehaviour {
     bool isBakanaSpawned;
     private int m_SoGoc=0;
     public GameObject m_Player;
-    public Button m_ResetGame;
     public GameObject m_StartPosition;
     public GameObject LevelController;
     //private int m_NumOfBanaka;
@@ -45,9 +45,9 @@ public class GameplayController : MonoBehaviour {
     // Use this for initialization
     void Start () {
         
-        SpawnMaze(m_BasicColumns, m_BasicRows);
+        SpawnMaze(m_BasicColumns+LevelController.GetComponent<LevelController>().m_Level, m_BasicRows+ LevelController.GetComponent<LevelController>().m_Level);
         isSpawned = true;
-        m_ResetGame.onClick.AddListener(hamReset);
+
     }
     private void Update()
     {
@@ -135,7 +135,7 @@ public class GameplayController : MonoBehaviour {
                     m_SoGoc++;
                     if(m_SoGoc > caseSummon())
                     {
-                        summonBakana(tmp, x, z);
+                        summonBakana(GoalPrefab, x, z);
                     }
                 }
             }
@@ -159,8 +159,9 @@ public class GameplayController : MonoBehaviour {
             deleteAllChild();
             SpawnMaze(Columns,Rows);
         }
+        spawnOutDoor(m_BasicColumns, m_BasicRows, GoalPrefab);
     }
-    void hamReset()
+    public void hamReset()
     {
         if(isSaved)
         {
@@ -175,6 +176,7 @@ public class GameplayController : MonoBehaviour {
     }
     void hamWin()
     {
+        Debug.Log("Win!");
         isWon = true;
         if (Parent == null) return;
         foreach (Transform Child in Parent.transform)
@@ -202,6 +204,24 @@ public class GameplayController : MonoBehaviour {
         else 
         {
             return LevelController.GetComponent<LevelController>().m_Level - 2;
+        }
+    }
+    void spawnOutDoor(int columns, int rows,GameObject goal)
+    {
+        if(isBakanaSpawned)
+        {
+            int randX;
+            int randZ;
+            GameObject outdoor;
+            do
+            {
+                randX = (Random.RandomRange(columns / 2, columns) - 1) * 4;
+                randZ = (Random.RandomRange(rows / 2, rows) - 1) * 4;
+            }
+            while (randX == GoalPrefab.transform.position.x && randZ == GoalPrefab.transform.position.z);
+            outdoor = Instantiate(m_OutDoor);
+            outdoor.transform.parent = Parent.transform;
+            outdoor.transform.position = new Vector3(randX, 0, randZ);
         }
     }
 }

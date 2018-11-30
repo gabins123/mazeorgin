@@ -4,7 +4,7 @@ using UnityEngine.EventSystems;
 public class FixedJoystick : Joystick
 {
     Vector2 joystickPosition = Vector2.zero;
-    private Camera cam = new Camera();
+    public Camera cam = new Camera();
 
     void Start()
     {

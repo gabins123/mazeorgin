@@ -17,6 +17,7 @@ public class Timer : MonoBehaviour {
     {
         m_Timer = Instantiate(TimerPrefabs);
         m_Timer.transform.parent = gameObject.transform;
+        m_Timer.transform.localScale = new Vector3(1, 1, 1);
         m_Timer.transform.localPosition = Vector3.zero;
     }
     // Update is called once per frame
@@ -34,6 +35,7 @@ public class Timer : MonoBehaviour {
             SecondCounter = 0;
             MinCounter = 0;
             HourCounter = 0;
+            GameplayController.GetComponent<GameplayController>().isWon = false;
         }
     }
 
@@ -55,6 +57,7 @@ public class Timer : MonoBehaviour {
     void setTimerPosition(Text m_Timer)
     {
         m_Timer.transform.parent = gameObject.transform;
+        m_Timer.transform.localScale = new Vector3(1,1,1);
         m_Timer.transform.localPosition = Vector3.zero;
         m_Timer.transform.localPosition -= new Vector3(0, 25*(m_Level-1), 0);
     }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class LevelController : MonoBehaviour {
 
     public GameObject GameplayController;
-    public int m_Level=0;
+    public int m_Level=1;
 
 	
 	// Update is called once per frame
@@ -16,7 +16,6 @@ public class LevelController : MonoBehaviour {
             m_Level++;
             GameplayController.GetComponent<GameplayController>().m_BasicColumns++;
             GameplayController.GetComponent<GameplayController>().m_BasicRows++;
-            GameplayController.GetComponent<GameplayController>().isWon = false;
         }
 	}
 }

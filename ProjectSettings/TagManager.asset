@@ -12,6 +12,7 @@ TagManager:
   - floor
   - coin
   - Bakanas
+  - OutDoor
   layers:
   - Default
   - TransparentFX
